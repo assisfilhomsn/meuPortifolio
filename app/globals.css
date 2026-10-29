@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f3f5f0;
+  --foreground: #1d2925;
+  --surface: #ffffff;
+  --muted: #64736c;
+  --line: #dce4dd;
+  --brand: #176b52;
+  --brand-dark: #104c3c;
+  --accent: #e8795b;
 }
 
 @theme inline {
@@ -12,15 +18,206 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
+  min-height: 100%;
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
+  line-height: 1.6;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+main {
+  width: min(100% - 40px, 920px);
+  margin: 0 auto;
+  padding: 48px 0 28px;
+}
+
+main > header {
+  margin-bottom: 28px;
+  padding: 22px 28px;
+  border-radius: 8px;
+  background: var(--brand-dark);
+  color: #f8fbf8;
+}
+
+main > header h1 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.portfolio-card {
+  padding: clamp(24px, 5vw, 48px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 0 12px 32px rgb(29 41 37 / 5%);
+}
+
+.portfolio-card > h1 {
+  max-width: 720px;
+  margin: 0;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 650;
+  line-height: 1.12;
+}
+
+.portfolio-card > h1 strong {
+  color: var(--brand);
+}
+
+.portfolio-card > h2 {
+  margin: 40px 0 16px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.portfolio-card ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.portfolio-card li {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--brand);
+  border-radius: 6px;
+  background: #fbfcfa;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.portfolio-card li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgb(29 41 37 / 8%);
+}
+
+.portfolio-card li h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.portfolio-card li p,
+main > div > p {
+  margin: 0;
+  color: var(--muted);
+}
+
+main > button,
+main > div > button,
+main form button {
+  min-height: 44px;
+  margin-top: 18px;
+  padding: 9px 16px;
+  border: 1px solid var(--brand);
+  border-radius: 6px;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+main > button:hover,
+main > div > button:hover,
+main form button:hover {
+  border-color: var(--brand-dark);
+  background: var(--brand-dark);
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgb(232 121 91 / 55%);
+  outline-offset: 3px;
+}
+
+main > div:not(.portfolio-card) {
+  margin: 4px 0 22px;
+}
+
+main form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 32px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+main form input {
+  flex: 1 1 220px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid #b9c7bd;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--foreground);
+}
+
+main form input::placeholder {
+  color: #78867f;
+}
+
+main form button {
+  margin: 0;
+}
+
+main form p {
+  flex-basis: 100%;
+  margin: 2px 0 0;
+  color: var(--brand-dark);
+}
+
+main > footer {
+  padding: 24px 4px 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+main > footer p {
+  margin: 0;
+}
+
+@media (max-width: 680px) {
+  main {
+    width: min(100% - 28px, 520px);
+    padding-top: 20px;
+  }
+
+  .portfolio-card ul {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolio-card > h2 {
+    margin-top: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
