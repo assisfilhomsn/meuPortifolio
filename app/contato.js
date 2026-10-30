@@ -18,6 +18,7 @@ export default function Contato() {
 
   return (
     <form onSubmit={enviar}>
+      <label>Contato</label>
       <input
         type="text"
         value={nome}
