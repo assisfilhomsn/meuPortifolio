@@ -36,9 +36,7 @@ export default function Tarefas({ tarefas = [] }) { // Define um array vazio com
 */
 
 "use client";
-
 import { useState } from "react";
-
 export default function Tarefas({ tarefas, onExcluir, onAlterar }) {
   // Estados para controlar qual item está sendo editado e o seu novo valor
   const [idEmEdicao, setIdEmEdicao] = useState(null);
