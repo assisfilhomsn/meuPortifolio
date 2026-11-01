@@ -1,69 +1,118 @@
+/*
 import Image from "next/image";
+import Cabecalho from "./cabecalho";
+import Cartao from "./cartao";
+import Rodape from "./rodape";
+import Curtir from "./curtir";
+import MostrarEsconder from "./MostrarEsconder";
+import Contato from "./contato";
+import Tarefas from "./tarefas";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main>
+       <Cabecalho /> 
+       <Cartao />
+       <Curtir /> 
+       <MostrarEsconder />
+       <Contato />
+       <Tarefas />
+       <Rodape />
+
+    </main>
+  ); // <-- Adicionado o ponto e vírgula e parêntese de fechamento do return
+} // <-- Adicionada a chave que fecha a função Home
+*/
+
+"use client";
+
+import { useState } from "react";
+import Cabecalho from "./cabecalho";
+import Cartao from "./cartao";
+import Rodape from "./rodape";
+import Curtir from "./curtir";
+import Contato from "./contato";
+import Tarefas from "./tarefas";
+
+export interface Tarefa {
+  id: number;
+  texto: string;
+}
+
+export default function Home() {
+  const [listaDeTarefas, setListaDeTarefas] = useState<Tarefa[]>([]);
+  const [textoDigitado, setTextoDigitado] = useState("");
+
+  const adicionarTarefa = () => {
+    if (textoDigitado.trim() === "") {
+      alert("Por favor, digite o nome da tarefa!");
+      return;
+    }
+
+    const novaTarefa: Tarefa = {
+      id: Date.now(),
+      texto: textoDigitado
+    };
+
+    setListaDeTarefas([...listaDeTarefas, novaTarefa]);
+    setTextoDigitado("");
+  };
+
+  const excluirTarefa = (id: number) => {
+    setListaDeTarefas(listaDeTarefas.filter(tarefa => tarefa.id !== id));
+  };
+
+  // Nova função para atualizar o texto de uma tarefa existente
+  const alterarTarefa = (id: number, novoTexto: string) => {
+    setListaDeTarefas(
+      listaDeTarefas.map(tarefa => 
+        tarefa.id === id ? { ...tarefa, texto: novoTexto } : tarefa
+      )
+    );
+  };
+
+  return (
+    <main style={{ padding: "20px", fontFamily: "sans-serif", color: "#333", backgroundColor: "#fff", minHeight: "100vh" }}>
+       <Cabecalho /> 
+       <Cartao />
+       <Curtir /> 
+       <Contato />
+       
+       <div style={{ margin: "20px 0", textAlign: "center" }}>
+         <input 
+           type="text"
+           placeholder="Digite uma nova tarefa..."
+           value={textoDigitado}
+           onChange={(e) => setTextoDigitado(e.target.value)}
+           style={{
+             padding: "10px",
+             fontSize: "16px",
+             width: "250px",
+             marginRight: "10px",
+             borderRadius: "5px",
+             border: "1px solid #ccc"
+           }}
+         />
+         <button 
+           onClick={adicionarTarefa} 
+           style={{
+             padding: "10px 20px",
+             fontSize: "16px",
+             backgroundColor: "#0070f3",
+             color: "white",
+             border: "none",
+             borderRadius: "5px",
+             cursor: "pointer"
+           }}
+         >
+           ➕ Adicionar
+         </button>
+       </div>
+
+       {/* Passamos também a nova função alterarTarefa para o componente */}
+       <Tarefas tarefas={listaDeTarefas} onExcluir={excluirTarefa} onAlterar={alterarTarefa} />
+       
+       <Rodape />
+    </main>
   );
 }
