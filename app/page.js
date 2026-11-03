@@ -1,0 +1,1 @@
+export default function Home(){return <section className="panel"><h2>Bem-vindo ao meu portfólio</h2><p>Projeto de Programação Web - SENAC Garanhuns, construído com Next.js.</p><p>Escolha uma opção no menu lateral para explorar.</p></section>}

@@ -1,0 +1,5 @@
+import {NextResponse} from 'next/server';
+export async function GET(){const username=process.env.GITHUB_USERNAME;const token=process.env.GITHUB_TOKEN;
+ if(!username)return NextResponse.json({error:'Configure GITHUB_USERNAME no .env.local'},{status:400});
+ const url=token?'https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=updated':'https://api.github.com/users/'+encodeURIComponent(username)+'/repos?per_page=100&sort=updated';
+ try{const r=await fetch(url,{headers:{'Accept':'application/vnd.github+json',...(token?{'Authorization':'Bearer '+token}:{})},cache:'no-store'});if(!r.ok)return NextResponse.json({error:'GitHub retornou HTTP '+r.status},{status:r.status});const repos=await r.json();return NextResponse.json(repos.map((x:{id:number;name:string;private:boolean;html_url:string;description:string|null})=>({id:x.id,name:x.name,private:x.private,url:x.html_url,description:x.description})));}catch{return NextResponse.json({error:'Falha ao consultar GitHub'},{status:502})}}

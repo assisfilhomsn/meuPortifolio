@@ -1,0 +1,7 @@
+"use client";
+import {useEffect,useState} from 'react';
+export default function Hobbies(){const [items,setItems]=useState([]);const [value,setValue]=useState('');const [editing,setEditing]=useState(null);const [ready,setReady]=useState(false);
+useEffect(()=>{try{const saved=JSON.parse(localStorage.getItem('hobbies-senac')||'[]');if(Array.isArray(saved))setItems(saved)}catch{}setReady(true)},[]);
+useEffect(()=>{if(ready)localStorage.setItem('hobbies-senac',JSON.stringify(items))},[items,ready]);
+function save(e){e.preventDefault();const v=value.trim();if(!v)return;if(editing!==null){setItems(items.map(x=>x.id===editing?{...x,text:v}:x));setEditing(null)}else setItems([...items,{id:crypto.randomUUID(),text:v}]);setValue('')}
+return <section className="panel"><h2>Meus hobbies</h2><p className="muted">A lista é salva neste navegador (localStorage).</p><form onSubmit={save} className="stack"><input className="input" value={value} onChange={e=>setValue(e.target.value)} placeholder="Digite um hobby" required/><button className="btn">{editing!==null?'Salvar alteração':'Adicionar'}</button></form><div>{items.map(x=><div className="item" key={x.id}><span>{x.text}</span><div className="stack"><button className="btn" onClick={()=>{setEditing(x.id);setValue(x.text)}}>Alterar</button><button className="btn danger" onClick={()=>{setItems(items.filter(y=>y.id!==x.id));if(editing===x.id){setEditing(null);setValue('')}}}>Remover</button></div></div>)}</div></section>}
